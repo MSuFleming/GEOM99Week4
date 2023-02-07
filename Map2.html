@@ -1,44 +1,123 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
-
-    <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-
-    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.25/"></script>
-
-    <script>
-      require(["esri/config", "esri/Map", "esri/views/MapView"], function(esriConfig, Map, MapView) {
-
-        esriConfig.apiKey = "AAPKe8787b68c10e47229374f402a0e61e364EQUp2dKX2yxOv4oAHpGPsRNpHYO2Kg8nKq-00Sz2BJo5MQLI555vz4WUFGpWkX4";
-
-        const map = new Map({
-          basemap: "hybrid" // Basemap layer service
-        });
-
-        const view = new MapView({
-          map: map,
-          center: [-78.37445526921516,44.266608197370125], // Longitude, latitude
-          zoom: 10, // Zoom level
-          container: "viewDiv" // Div element
-        });
-
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>ArcGIS Maps SDK for JavaScript Tutorials: Add a point, line, and polygon</title>
+      <style>
+        html, body, #viewDiv {
+          padding: 0;
+          margin: 0;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+      <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+      <script src="https://js.arcgis.com/4.25/"></script>
+      <script>
+    
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+    
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer"
+    
+        ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
+    
+      esriConfig.apiKey = "AAPKe8787b68c10e47229374f402a0e61e364EQUp2dKX2yxOv4oAHpGPsRNpHYO2Kg8nKq-00Sz2BJo5MQLI555vz4WUFGpWkX4";
+    
+      const map = new Map({
+        basemap: "arcgis-topographic" //Basemap layer service
       });
-    </script>
+    
+      const view = new MapView({
+        map: map,
+        center: [-78.74117848922772, 44.3411160207992], //Longitude, latitude
+        zoom: 15,
+        container: "viewDiv"
+     });
+    
+     const graphicsLayer = new GraphicsLayer();
+     map.add(graphicsLayer);
+    
+     const point = { //Create a point
+        type: "point",
+        longitude: -78.74117848922772,
+        latitude: 44.3411160207992
+     };
+     const simpleMarkerSymbol = {
+        type: "simple-marker",
+        color: [46,128,0],  // green
+        outline: {
+            color: [0, 0, 0], // black
+            width: 1
+        }
+     };
+    
+     const pointGraphic = new Graphic({
+        geometry: point,
+        symbol: simpleMarkerSymbol
+     });
+     graphicsLayer.add(pointGraphic);
 
-  </head>
-  <body>
-    <div id="viewDiv"></div>
-  </body>
-</html>
+     const polyline = {
+    type: "polyline",
+    paths: [
+        [-78.74117848922772, 44.3411160207992],
+        [-78.74000904608981, 44.34227849465621], //Longitude, latitude
+        [-78.74167738007314, 44.34630285482737] //Longitude, latitude
+
+    ]
+ };
+ const simpleLineSymbol = {
+    type: "simple-line",
+    color: [226, 119, 40], // Orange
+    width: 2
+ };
+
+ const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: simpleLineSymbol
+ });
+ graphicsLayer.add(polylineGraphic);
+
+ // Create a polygon geometry
+ const polygon = {
+    type: "polygon",
+    rings: [
+        [-78.74139843034428, 44.34608227027878], //Longitude, latitude
+        [-78.73836082865401,44.346863903111235], //Longitude, latitude
+        [-78.73850164462438, 44.34713147809741], //Longitude, latitude
+        [-78.7403590743648, 44.34680635994674], 
+        [-78.74072921920262,44.347819111420364], 
+        [-78.74182356046228,44.3472973931495], //Longitude, latitude
+        [-78.741405135863, 44.34638437500172]  //Longitude, latitude
+    ]
+ };
+
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [124, 250, 0, 0.8],  // Orange, opacity 80%
+    outline: {
+        color: [0, 0, 0],
+        width: 1
+    }
+ };
+
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
+
+ });
+ graphicsLayer.add(polygonGraphic);
+    
+     });
+    </script>
+    </head>
+    <body>
+      <div id="viewDiv"></div>
+    </body>
+    </html>
+    
