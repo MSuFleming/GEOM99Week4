@@ -1,0 +1,133 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS Developer Guide: Data layers (Feature layers)</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+<link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+<script src="https://js.arcgis.com/4.25"></script>
+
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/Graphic",
+        "esri/layers/GraphicsLayer"
+    ], (esriConfig, Map, MapView, FeatureLayer,Graphic, GraphicsLayer)=> {
+
+      esriConfig.apiKey = "AAPKe8787b68c10e47229374f402a0e61e364EQUp2dKX2yxOv4oAHpGPsRNpHYO2Kg8nKq-00Sz2BJo5MQLI555vz4WUFGpWkX4";
+
+      const map = new Map({
+        basemap: "osm" //Basemap service
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-78.793561240356,44.18023512666176], //Longitude, latitude
+        zoom: 10,
+        constraints: {
+          snapToZoom: false
+        }
+      });
+
+      const pointLayer = new FeatureLayer({
+        url: "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/GEOM99_Week3_GeoJSONMap/FeatureServer"
+      });
+      map.add(pointLayer,0);
+
+      const lineLayer = new FeatureLayer({
+        url: "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/GEOM99_Week3_GeoJSONMap/FeatureServer/1"
+      });
+      map.add(lineLayer,0);
+
+      const graphicsLayer = new GraphicsLayer();
+     map.add(graphicsLayer);
+    
+     const point = { //Create a point
+        type: "point",
+        longitude: -78.83688611109595,
+        latitude: 43.94166870544499
+     };
+     const simpleMarkerSymbol = {
+        type: "simple-marker",
+        color: [255,0,0],  // red
+        outline: {
+            color: [0, 0, 0], // black
+            width: 1
+        }
+     };
+    
+     const pointGraphic = new Graphic({
+        geometry: point,
+        symbol: simpleMarkerSymbol
+     });
+     graphicsLayer.add(pointGraphic);
+
+     // Create a polygon geometry
+ const polygon = {
+    type: "polygon",
+    rings: [
+        [-78.88340451327414,43.8930380085294], //Longitude, latitude
+        [-78.87831904494335,43.89408949392279], //Longitude, latitude
+        [-78.87540080153305,43.887223577587896], //Longitude, latitude
+        [-78.88007857409048,43.886264760539106]
+    ]
+ };
+
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [124, 250, 0, 1],  // Orange, opacity 80%
+    outline: {
+        color: [0, 0, 0],
+        width: 1
+    }
+ };
+
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
+
+ });
+ graphicsLayer.add(polygonGraphic);
+
+ 
+ const polyline = {
+    type: "polyline",
+    paths: [
+        [-78.74117848922772, 44.3411160207992],
+        [-78.83688611109595, 43.94166870544499], //Longitude, latitude
+        [-78.87964942064484,43.891677235071604] //Longitude, latitude
+
+    ]
+ };
+ const simpleLineSymbol = {
+    type: "simple-line",
+    color: [238, 130, 238], // pink
+    width: 2
+ };
+
+ const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: simpleLineSymbol
+ });
+ graphicsLayer.add(polylineGraphic);
+    
+
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
